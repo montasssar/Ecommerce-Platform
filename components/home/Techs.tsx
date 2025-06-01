@@ -1,12 +1,16 @@
 'use client';
-import React from 'react';
-import ProductGrid from './ProductGrid';
 
-const techProducts = [
-  { name: 'iPhone', price: '$999', image: '/images/iphone.jpg' },
-  { name: 'Wireless Headphones', price: '$299', image: '/images/headphones.jpg' },
-];
+import { products } from '@/data/products';
+import ProductCard from '../home/ProductCard';
 
 export default function Techs() {
-  return <ProductGrid products={techProducts} />;
+  const techs = products.Techs;
+
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      {techs.map((product) => (
+        <ProductCard key={product.id} product={product} />
+      ))}
+    </div>
+  );
 }
