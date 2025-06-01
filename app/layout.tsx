@@ -4,7 +4,8 @@ import "./globals.css";
 
 import { StateContext } from "@/context/StateContext";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer"; // ✅ Import footer
+import Footer from "@/components/Footer";
+import ScrollToTop from "@/components/ScrollToTop";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,8 +28,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <StateContext>
           <Navbar />
-          <main className="min-h-screen">{children}</main>
-          <Footer /> {/* ✅ Global footer inclusion */}
+          <main className="min-h-screen relative">
+            {children}
+            <ScrollToTop /> {/* Elegant floating button */}
+          </main>
+          <Footer />
         </StateContext>
       </body>
     </html>
