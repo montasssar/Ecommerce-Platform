@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Techs from '../../components/home/Techs';
 import Clothes from '../../components/home/Clothes';
 import Decor from '../../components/home/Decor';
@@ -10,6 +10,7 @@ import AllProducts from '../../components/home/AllProducts';
 const TABS = ['All', 'Techs', 'Clothes', 'Decor'];
 
 export default function HomePage() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const initialTab = searchParams.get('tab') || 'All';
 
@@ -20,6 +21,11 @@ export default function HomePage() {
       setActiveTab(initialTab);
     }
   }, [initialTab]);
+
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
+    router.push(`/home?tab=${tab}`);
+  };
 
   const renderContent = () => {
     switch (activeTab) {
@@ -41,7 +47,7 @@ export default function HomePage() {
         {TABS.map((tab) => (
           <button
             key={tab}
-            onClick={() => setActiveTab(tab)}
+            onClick={() => handleTabChange(tab)}
             className={`px-4 py-2 rounded-full text-sm font-medium border ${
               activeTab === tab
                 ? 'bg-black text-white'
