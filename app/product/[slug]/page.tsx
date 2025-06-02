@@ -9,15 +9,14 @@ type Props = {
   };
 };
 
-// SEO Metadata for each product
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const all = [...products.Techs, ...products.Clothes, ...products.Decor];
   const product = all.find((p) => p.id === params.slug);
 
   if (!product) {
     return {
-      title: 'Product Not Found | Denya W\' Decor',
-      description: 'This product does not exist or is unavailable.',
+      title: "Product Not Found | Denya W' Decor",
+      description: "This product does not exist or is unavailable.",
     };
   }
 
@@ -38,7 +37,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-// Page Component
 export default function ProductPage({ params }: Props) {
   const allProducts = [...products.Techs, ...products.Clothes, ...products.Decor];
   const product = allProducts.find((p) => p.id === params.slug);

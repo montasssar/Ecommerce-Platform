@@ -6,6 +6,7 @@ import { StateContext } from "@/context/StateContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,9 +31,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Navbar />
           <main className="min-h-screen relative">
             {children}
-            <ScrollToTop /> {/* Elegant floating button */}
+            <ScrollToTop />
           </main>
           <Footer />
+          <Toaster position="top-right" />
         </StateContext>
       </body>
     </html>
