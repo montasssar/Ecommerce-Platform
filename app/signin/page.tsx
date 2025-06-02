@@ -2,16 +2,48 @@
 
 import Link from 'next/link';
 import { FcGoogle } from 'react-icons/fc';
+import { useRouter } from 'next/navigation';
+import { signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '@/lib/firebase'; // ✅ ensure firebase.ts exports configured `auth`
+import { useState } from 'react';
+import toast from 'react-hot-toast';
 
 export default function SignInPage() {
+  const router = useRouter();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleGoogleSignIn = async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      await signInWithPopup(auth, provider);
+      toast.success('Signed in with Google');
+      router.push('/app/home');
+    } catch (err) {
+      console.error('Google Sign-In error:', err);
+      toast.error('Google sign-in failed');
+    }
+  };
+
+  const handleEmailSignIn = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      toast.success('Signed in successfully');
+      router.push('/app/home');
+    } catch (err) {
+      console.error('Email Sign-In error:', err);
+      toast.error('Invalid email or password');
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <div className="max-w-md w-full bg-white p-8 rounded-xl shadow-lg space-y-6">
         <h2 className="text-2xl font-bold text-gray-800">Welcome back</h2>
 
-        {/* Google Sign-In */}
         <button
-          onClick={() => console.log('Google Sign-In')}
+          onClick={handleGoogleSignIn}
           className="w-full flex items-center justify-center gap-2 py-2 border rounded-md hover:bg-gray-100 transition"
         >
           <FcGoogle size={22} />
@@ -23,16 +55,19 @@ export default function SignInPage() {
           <hr className="absolute top-1/2 w-full border-t border-gray-300 z-0" />
         </div>
 
-        {/* Email/Password Login Form */}
-        <form className="space-y-4">
+        <form className="space-y-4" onSubmit={handleEmailSignIn}>
           <input
             type="email"
             placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring"
           />
           <input
             type="password"
             placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring"
           />
           <button
@@ -43,7 +78,6 @@ export default function SignInPage() {
           </button>
         </form>
 
-        {/* Signup Redirect */}
         <p className="text-sm text-center text-gray-600">
           Don&apos;t have an account?{' '}
           <Link href="/signup" className="text-blue-500 hover:underline">
