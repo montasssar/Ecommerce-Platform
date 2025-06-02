@@ -33,11 +33,12 @@ export default function Navbar() {
         </Link>
 
         {/* Nav Links */}
-        <nav className="hidden md:flex space-x-6 text-sm font-medium text-gray-600">
-          <Link href="/">Home</Link>
-          <Link href="/shop">Shop</Link>
-          <Link href="/contact">Contact</Link>
-        </nav>
+  <nav className="hidden md:flex space-x-6 text-sm font-medium text-gray-600">
+  <Link href="/home">Home</Link>
+  <Link href="/shop">Shop</Link>
+  <Link href="/contact">Contact</Link>
+</nav>
+
 
         {/* Right Actions: Auth + Cart */}
         <div className="flex items-center space-x-4">
