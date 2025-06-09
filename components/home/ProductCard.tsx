@@ -2,9 +2,19 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Product } from '@/data/products';
 
-export default function ProductCard({ product }: { product: Product }) {
+type MinimalProduct = {
+  id: string;
+  name: string;
+  price: number;
+  image: string;
+};
+
+type ProductCardProps = {
+  product: MinimalProduct; // works for both with and without category
+};
+
+export default function ProductCard({ product }: ProductCardProps) {
   return (
     <Link
       href={`/product/${product.id}`}
@@ -22,7 +32,7 @@ export default function ProductCard({ product }: { product: Product }) {
       </div>
       <div className="p-4 text-center">
         <h3 className="text-base md:text-lg font-semibold truncate">{product.name}</h3>
-        <p className="text-sm text-gray-600">{product.price}</p>
+        <p className="text-sm text-gray-600">${product.price}</p>
       </div>
     </Link>
   );

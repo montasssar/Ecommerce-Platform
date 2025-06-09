@@ -18,7 +18,7 @@ export default function SignInPage() {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
       toast.success('Signed in with Google');
-      router.push('/app/home');
+      router.push('/home');
     } catch (err) {
       console.error('Google Sign-In error:', err);
       toast.error('Google sign-in failed');
