@@ -1,12 +1,20 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { Product } from '@/data/products';
 
-export type CartItem = Product & { quantity: number };
+// ✅ Define a local flexible product type
+export type CartProduct = {
+  id: string;
+  name: string;
+  price: number;
+  image: string;
+  category?: 'Techs' | 'Clothes' | 'Decor'; // made optional ✅
+};
+
+export type CartItem = CartProduct & { quantity: number };
 
 type CartStore = {
   cart: CartItem[];
-  addToCart: (product: Product) => void;
+  addToCart: (product: CartProduct) => void;
   removeFromCart: (id: string) => void;
   increment: (id: string) => void;
   decrement: (id: string) => void;
