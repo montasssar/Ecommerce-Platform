@@ -1,10 +1,17 @@
 'use client';
 
 import Image from 'next/image';
-import { Product } from '@/data/products';
 import { useCartStore } from '@/hooks/useCartStore';
 import { useAuth } from '@/hooks/useAuth';
 import toast from 'react-hot-toast';
+
+type Product = {
+  id: string;
+  name: string;
+  price: number;
+  image: string;
+  category?: 'Techs' | 'Clothes' | 'Decor';
+};
 
 type Props = {
   product: Product;
@@ -26,10 +33,7 @@ export default function ProductDetail({ product }: Props) {
 
   return (
     <main className="max-w-6xl mx-auto px-4 py-12">
-      <section
-        className="grid md:grid-cols-2 gap-10 items-center"
-        aria-labelledby="product-title"
-      >
+      <section className="grid md:grid-cols-2 gap-10 items-center" aria-labelledby="product-title">
         <div className="relative w-full h-[400px] md:h-[500px]">
           <Image
             src={`/images/${product.image}`}
@@ -51,8 +55,14 @@ export default function ProductDetail({ product }: Props) {
           </p>
 
           <p className="text-gray-600 mb-6 leading-relaxed">
-            A beautifully crafted <span className="capitalize">{product.category}</span> product
-            designed for modern living and exceptional comfort.
+            A beautifully crafted
+            {product.category && (
+              <>
+                {' '}
+                <span className="capitalize">{product.category}</span>
+              </>
+            )}{' '}
+            product designed for modern living and exceptional comfort.
           </p>
 
           <button
