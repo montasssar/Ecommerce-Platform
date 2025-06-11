@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import emailjs from 'emailjs-com'
 
 export default function ContactForm() {
   const [form, setForm] = useState({
@@ -19,17 +20,32 @@ export default function ContactForm() {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setLoading(true)
 
-    try {
-      await new Promise(resolve => setTimeout(resolve, 1000))
+    const templateParams = {
+      name: form.name,
+      email: form.email,
+      title: form.subject,
+      message: form.message,
+    }
+
+    emailjs.send(
+      'service_ofllgnm',
+      'template_2i8s6yu',
+      templateParams,
+      '_tyUvrL7DYKmGmaWN'
+    )
+    .then(() => {
       setSubmitted(true)
       setForm({ name: '', email: '', subject: '', message: '' })
-    } finally {
-      setLoading(false)
-    }
+    })
+    .catch((err) => {
+      console.error('EmailJS Error:', err)
+      alert('❌ Failed to send your message.')
+    })
+    .finally(() => setLoading(false))
   }
 
   return (
