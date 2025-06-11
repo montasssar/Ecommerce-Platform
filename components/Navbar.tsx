@@ -1,3 +1,4 @@
+// components/Navbar.tsx
 'use client';
 
 import Link from 'next/link';
@@ -7,7 +8,7 @@ import { useAuth } from '@/hooks/useAuth';
 import LogoutButton from '@/components/LogoutButton';
 import { useCartStore } from '@/hooks/useCartStore';
 import { useState } from 'react';
-import { Cart } from '@/components/Cart'; // ✅ named import
+import { Cart } from '@/components/Cart';
 
 export default function Navbar() {
   const { user, loading } = useAuth();
@@ -15,6 +16,8 @@ export default function Navbar() {
     state.cart.reduce((sum, item) => sum + item.quantity, 0)
   );
   const [showCart, setShowCart] = useState(false);
+
+  const isAdmin = user?.email === 'montassar579@gmail.com';
 
   const authAction = !loading && (
     user ? (
@@ -39,6 +42,7 @@ export default function Navbar() {
           <Link href="/home">Home</Link>
           <Link href="/shop">Shop</Link>
           <Link href="/contact">Contact</Link>
+          {isAdmin && <Link href="/admin">Admin</Link>}
         </nav>
 
         <div className="flex items-center space-x-4">

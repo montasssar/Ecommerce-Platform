@@ -2,9 +2,7 @@
 
 import { useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
-import { Product } from '@/hooks/useProducts';
-
-type ProductInput = Omit<Product, 'id' | 'createdAt'>;
+import type { ProductInput } from '@/types/product';
 
 type Props = {
   initialData?: ProductInput;
@@ -65,24 +63,29 @@ export default function ProductForm({ initialData, onSubmit, onCancel }: Props) 
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* fields: name, price, category, stock, image */}
-        {['name', 'price', 'stock', 'image'].map((field) => (
-          <div key={field}>
-            <label className="block text-sm font-medium mb-1 capitalize">
-              {field}
-            </label>
-            <input
-              type={field === 'price' || field === 'stock' ? 'number' : 'text'}
-              name={field}
-              value={formData[field as keyof ProductInput]}
-              onChange={handleChange}
-              className="w-full border px-3 py-2 rounded-md"
-            />
-            {errors[field] && (
-              <p className="text-sm text-red-500 mt-1">{errors[field]}</p>
-            )}
-          </div>
-        ))}
+        <div>
+          <label className="block text-sm font-medium mb-1">Name</label>
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            className="w-full border px-3 py-2 rounded-md"
+          />
+          {errors.name && <p className="text-sm text-red-500 mt-1">{errors.name}</p>}
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1">Price ($)</label>
+          <input
+            type="number"
+            name="price"
+            value={formData.price}
+            onChange={handleChange}
+            className="w-full border px-3 py-2 rounded-md"
+          />
+          {errors.price && <p className="text-sm text-red-500 mt-1">{errors.price}</p>}
+        </div>
 
         <div>
           <label className="block text-sm font-medium mb-1">Category</label>
@@ -96,6 +99,29 @@ export default function ProductForm({ initialData, onSubmit, onCancel }: Props) 
               <option key={cat}>{cat}</option>
             ))}
           </select>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1">Stock</label>
+          <input
+            type="number"
+            name="stock"
+            value={formData.stock}
+            onChange={handleChange}
+            className="w-full border px-3 py-2 rounded-md"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1">Image URL</label>
+          <input
+            type="text"
+            name="image"
+            value={formData.image}
+            onChange={handleChange}
+            className="w-full border px-3 py-2 rounded-md"
+          />
+          {errors.image && <p className="text-sm text-red-500 mt-1">{errors.image}</p>}
         </div>
 
         <div className="flex items-center justify-end gap-3 pt-4">

@@ -2,15 +2,7 @@
 
 import Image from 'next/image';
 import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
-
-type Product = {
-  id: string;
-  name: string;
-  price: number;
-  category: string;
-  stock: number;
-  image: string;
-};
+import type { Product } from '@/types/product';
 
 type Props = {
   products: Product[];

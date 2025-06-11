@@ -1,12 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { useProducts, Product } from '@/hooks/useProducts';
+import { useProducts } from '@/hooks/useProducts';
+import { Product, ProductInput } from '@/types/product';
 import ProductTable from '@/components/admin/ProductTable';
 import ProductForm from '@/components/admin/ProductForm';
-
-// Narrowed form input type: no 'id' or 'createdAt'
-type ProductInput = Omit<Product, 'id' | 'createdAt'>;
 
 export default function ManageProductsPage() {
   const {
@@ -30,7 +28,13 @@ export default function ManageProductsPage() {
 
   const handleEdit = (product: Product) => {
     const { id, name, price, category, stock, image } = product;
-    setEditData({ name, price, category, stock, image });
+    setEditData({
+      name,
+      price,
+      category: category as ProductInput['category'],
+      stock,
+      image,
+    });
     setEditId(id);
     setShowForm(true);
   };

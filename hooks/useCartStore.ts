@@ -1,14 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-
-// ✅ Define a local flexible product type
-export type CartProduct = {
-  id: string;
-  name: string;
-  price: number;
-  image: string;
-  category?: 'Techs' | 'Clothes' | 'Decor'; // made optional ✅
-};
+import type { CartProduct } from '@/types/product'; // ✅ use shared type
 
 export type CartItem = CartProduct & { quantity: number };
 

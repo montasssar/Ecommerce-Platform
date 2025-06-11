@@ -1,4 +1,3 @@
-// hooks/useProducts.ts
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -12,16 +11,7 @@ import {
   Timestamp,
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-
-export type Product = {
-  id: string;
-  name: string;
-  price: number;
-  category: string;
-  stock: number;
-  image: string;
-  createdAt: Timestamp;
-};
+import { Product } from '@/types/product';
 
 export function useProducts() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -48,14 +38,12 @@ export function useProducts() {
   }, []);
 
   const addProduct = async (product: Omit<Product, 'id' | 'createdAt'>) => {
+    const createdAt = Timestamp.now();
     const newDoc = await addDoc(collection(db, 'products'), {
       ...product,
-      createdAt: Timestamp.now(),
+      createdAt,
     });
-    setProducts((prev) => [
-      ...prev,
-      { ...product, id: newDoc.id, createdAt: Timestamp.now() },
-    ]);
+    setProducts((prev) => [...prev, { ...product, id: newDoc.id, createdAt }]);
   };
 
   const updateProduct = async (id: string, updates: Partial<Product>) => {

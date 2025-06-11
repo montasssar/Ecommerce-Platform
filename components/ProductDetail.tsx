@@ -4,14 +4,7 @@ import Image from 'next/image';
 import { useCartStore } from '@/hooks/useCartStore';
 import { useAuth } from '@/hooks/useAuth';
 import toast from 'react-hot-toast';
-
-type Product = {
-  id: string;
-  name: string;
-  price: number;
-  image: string;
-  category?: 'Techs' | 'Clothes' | 'Decor';
-};
+import type { Product, CartProduct } from '@/types/product';
 
 type Props = {
   product: Product;
@@ -27,7 +20,16 @@ export default function ProductDetail({ product }: Props) {
       return;
     }
 
-    addToCart(product);
+    const cartProduct: CartProduct = {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      category: product.category as 'Techs' | 'Clothes' | 'Decor',
+      stock: product.stock,
+    };
+
+    addToCart(cartProduct);
     toast.success(`${product.name} added to cart`);
   };
 
@@ -36,7 +38,7 @@ export default function ProductDetail({ product }: Props) {
       <section className="grid md:grid-cols-2 gap-10 items-center" aria-labelledby="product-title">
         <div className="relative w-full h-[400px] md:h-[500px]">
           <Image
-            src={`/images/${product.image}`}
+            src={product.image}
             alt={`Photo of ${product.name}`}
             fill
             className="rounded-xl object-cover"

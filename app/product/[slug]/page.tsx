@@ -1,7 +1,9 @@
 import { notFound } from 'next/navigation';
 import ProductDetail from '@/components/ProductDetail';
-import { shopProducts } from '@/data/ShopProducts';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
 import type { Metadata } from 'next';
+import type { Product } from '@/types/product';
 
 type Props = {
   params: {
@@ -10,14 +12,16 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const product = shopProducts.find((p) => p.id === params.slug);
+  const snapshot = await getDoc(doc(db, 'products', params.slug));
 
-  if (!product) {
+  if (!snapshot.exists()) {
     return {
-      title: "Product Not Found | Denya W' Decor",
-      description: "This product does not exist or is unavailable.",
+      title: 'Product Not Found | Denya W\' Decor',
+      description: 'This product does not exist or is unavailable.',
     };
   }
+
+  const product = snapshot.data() as Product;
 
   return {
     title: `${product.name} | Denya W' Decor`,
@@ -25,21 +29,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: `${product.name} | Denya W' Decor`,
       description: `Shop ${product.name} now available.`,
-      images: [`/images/${product.image}`],
+      images: [product.image],
     },
     twitter: {
       card: 'summary_large_image',
       title: `${product.name} | Denya W' Decor`,
       description: `Buy ${product.name} for $${product.price}`,
-      images: [`/images/${product.image}`],
+      images: [product.image],
     },
   };
 }
 
-export default function ProductPage({ params }: Props) {
-  const product = shopProducts.find((p) => p.id === params.slug);
+export default async function ProductPage({ params }: Props) {
+  const snapshot = await getDoc(doc(db, 'products', params.slug));
 
-  if (!product) return notFound();
+  if (!snapshot.exists()) return notFound();
+
+  const product = snapshot.data() as Product;
 
   return <ProductDetail product={product} />;
 }
