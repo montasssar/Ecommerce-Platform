@@ -5,14 +5,12 @@ import { db } from '@/lib/firebase';
 import type { Metadata } from 'next';
 import type { Product } from '@/types/product';
 
-// Correctly typed props for App Router dynamic route
 interface PageProps {
   params: {
     slug: string;
   };
 }
 
-// Optional SEO metadata for this page
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const snapshot = await getDoc(doc(db, 'products', params.slug));
 
@@ -42,7 +40,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-// Dynamic Product Page
 export default async function ProductPage({ params }: PageProps) {
   const snapshot = await getDoc(doc(db, 'products', params.slug));
 
