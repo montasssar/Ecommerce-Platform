@@ -5,16 +5,16 @@ import { db } from '@/lib/firebase';
 import type { Metadata } from 'next';
 import type { Product } from '@/types/product';
 
+// Cleaned and correct interface — do NOT use "type Props" anywhere!
 interface PageProps {
   params: {
     slug: string;
   };
 }
 
-export async function generateMetadata(
-  { params }: PageProps
-): Promise<Metadata> {
-  const snapshot = await getDoc(doc(db, 'products', params.slug));
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const docRef = doc(db, 'products', params.slug);
+  const snapshot = await getDoc(docRef);
 
   if (!snapshot.exists()) {
     return {
@@ -43,7 +43,8 @@ export async function generateMetadata(
 }
 
 export default async function ProductPage({ params }: PageProps) {
-  const snapshot = await getDoc(doc(db, 'products', params.slug));
+  const docRef = doc(db, 'products', params.slug);
+  const snapshot = await getDoc(docRef);
 
   if (!snapshot.exists()) {
     return notFound();
