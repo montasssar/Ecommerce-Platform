@@ -5,18 +5,20 @@ import { db } from '@/lib/firebase';
 import type { Metadata } from 'next';
 import type { Product } from '@/types/product';
 
-type Props = {
+// Correctly typed props for App Router dynamic route
+interface PageProps {
   params: {
     slug: string;
   };
-};
+}
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+// Optional SEO metadata for this page
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const snapshot = await getDoc(doc(db, 'products', params.slug));
 
   if (!snapshot.exists()) {
     return {
-      title: 'Product Not Found | Denya W\' Decor',
+      title: "Product Not Found | Denya W' Decor",
       description: 'This product does not exist or is unavailable.',
     };
   }
@@ -40,10 +42,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function ProductPage({ params }: Props) {
+// Dynamic Product Page
+export default async function ProductPage({ params }: PageProps) {
   const snapshot = await getDoc(doc(db, 'products', params.slug));
 
-  if (!snapshot.exists()) return notFound();
+  if (!snapshot.exists()) {
+    return notFound();
+  }
 
   const product = snapshot.data() as Product;
 
