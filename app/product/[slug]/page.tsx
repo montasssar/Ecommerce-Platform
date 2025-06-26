@@ -5,16 +5,10 @@ import { db } from '@/lib/firebase';
 import type { Metadata } from 'next';
 import type { Product } from '@/types/product';
 
-// ✅ Rename to avoid conflict with Next.js internal PageProps type
-interface ProductPageProps {
-  params: {
-    slug: string;
-  };
-}
-
-export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
-  const docRef = doc(db, 'products', params.slug);
-  const snapshot = await getDoc(docRef);
+export async function generateMetadata(
+  { params }: { params: { slug: string } }
+): Promise<Metadata> {
+  const snapshot = await getDoc(doc(db, 'products', params.slug));
 
   if (!snapshot.exists()) {
     return {
@@ -42,9 +36,10 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   };
 }
 
-export default async function ProductPage({ params }: ProductPageProps) {
-  const docRef = doc(db, 'products', params.slug);
-  const snapshot = await getDoc(docRef);
+export default async function ProductPage(
+  { params }: { params: { slug: string } }
+) {
+  const snapshot = await getDoc(doc(db, 'products', params.slug));
 
   if (!snapshot.exists()) {
     return notFound();
