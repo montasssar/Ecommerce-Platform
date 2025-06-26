@@ -5,14 +5,14 @@ import { db } from '@/lib/firebase';
 import type { Metadata } from 'next';
 import type { Product } from '@/types/product';
 
-// Cleaned and correct interface — do NOT use "type Props" anywhere!
-interface PageProps {
+// ✅ Rename to avoid conflict with Next.js internal PageProps type
+interface ProductPageProps {
   params: {
     slug: string;
   };
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const docRef = doc(db, 'products', params.slug);
   const snapshot = await getDoc(docRef);
 
@@ -42,7 +42,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default async function ProductPage({ params }: PageProps) {
+export default async function ProductPage({ params }: ProductPageProps) {
   const docRef = doc(db, 'products', params.slug);
   const snapshot = await getDoc(docRef);
 
