@@ -11,7 +11,9 @@ interface PageProps {
   };
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata(
+  { params }: PageProps
+): Promise<Metadata> {
   const snapshot = await getDoc(doc(db, 'products', params.slug));
 
   if (!snapshot.exists()) {
