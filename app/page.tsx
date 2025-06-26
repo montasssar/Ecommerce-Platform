@@ -7,7 +7,7 @@ import type { Metadata } from 'next'
 
 // === SEO Metadata ===
 export const metadata: Metadata = {
-  title: 'YourBrand | Curated Shopping for Tech, Style & Décor',
+  title: 'Denya W Décor',
   description: 'Discover your next favorite product with our curated categories in technology, fashion, and home décor.',
   openGraph: {
     title: 'YourBrand | Curated Shopping for Tech, Style & Décor',

@@ -1,15 +1,23 @@
 import Stripe from 'stripe';
 import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-apiVersion: '2022-11-15'
+  apiVersion: '2022-11-15',
 });
 
-export async function POST(req: Request) {
-  try {
-    const items = await req.json();
+interface CheckoutItem {
+  name: string;
+  image?: string;
+  price: number | string;
+  quantity: number;
+}
 
-    const line_items = items.map((item: any) => ({
+export async function POST(req: NextRequest) {
+  try {
+    const items: CheckoutItem[] = await req.json();
+
+    const line_items = items.map((item) => ({
       price_data: {
         currency: 'usd',
         product_data: {
@@ -31,6 +39,9 @@ export async function POST(req: Request) {
     return NextResponse.json({ id: session.id });
   } catch (err) {
     console.error('[STRIPE_SESSION_ERROR]', err);
-    return NextResponse.json({ error: 'Stripe session creation failed' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Stripe session creation failed' },
+      { status: 500 }
+    );
   }
 }

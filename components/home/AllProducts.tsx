@@ -4,7 +4,7 @@ import { usePublicProducts } from '@/hooks/usePublicProducts';
 import ProductCard from './ProductCard';
 
 export default function AllProducts() {
-  const { products, loading } = usePublicProducts();
+  const { products, loading } = usePublicProducts('All');
 
   if (loading) return <p className="text-gray-500">Loading...</p>;
 
